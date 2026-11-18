@@ -517,24 +517,78 @@ function startAnimation() {
     Visitas: <span id="visitas">...</span>
 </div>
 
-<script>
-async function contarVisita() {
+
+<style>
+#contador-visitas {
+    position: fixed;
+    bottom: 12px;
+    right: 12px;
+    background: rgba(0,0,0,0.85);
+    color: white;
+    padding: 12px 18px;
+    border: 1px solid #ff245b;
+    border-radius: 20px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    z-index: 99999;
+    box-shadow: 0 0 15px rgba(255,36,91,0.3);
+}
+</style>
+
+<div id="contador-visitas">
+    ❤️ Visitas: <strong id="total-visitas">Cargando...</strong>
+    <div id="error-visitas" style="font-size:10px;color:#ff6688"></div>
+</div>
+
+<script type="module">
+import { createClient } from
+'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+// CONFIGURACIÓN DE SUPABASE
+const SUPABASE_URL = 'TU_SUPABASE_URL';
+const SUPABASE_KEY = 'TU_SUPABASE_ANON_KEY';
+
+const supabase = createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+async function registrarVisita() {
+    const numero = document.getElementById('total-visitas');
+    const errorTexto = document.getElementById('error-visitas');
+
     try {
-        const respuesta = await fetch(
-            "https://api.counterapi.dev/v1/mi-pagina-ruben/visitas/up"
-        );
+        // Registrar visita
+        const { error: errorInsert } = await supabase
+            .from('visitas')
+            .insert({
+                fecha: new Date().toISOString()
+            });
 
-        const datos = await respuesta.json();
+        if (errorInsert) throw errorInsert;
 
-        document.getElementById("visitas").textContent =
-            datos.count;
+        // Consultar total de visitas
+        const { count, error: errorConsulta } = await supabase
+            .from('visitas')
+            .select('*', {
+                count: 'exact',
+                head: true
+            });
+
+        if (errorConsulta) throw errorConsulta;
+
+        numero.textContent = count ?? 0;
+
     } catch (error) {
-        document.getElementById("visitas").textContent = "Error";
+        numero.textContent = 'Error';
+        errorTexto.textContent = error.message;
+        console.error('Error contador:', error);
     }
 }
 
-contarVisita();
+registrarVisita();
 </script>
+
 
 </body>
 </html>
