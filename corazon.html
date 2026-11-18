@@ -1,0 +1,329 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Adriana 💕</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #050505;
+    color: white;
+    font-family: system-ui, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+h1 {
+    color: #ff3366;
+    font-size: 27px;
+    text-align: center;
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px #ff336688;
+}
+
+p {
+    color: #aaa;
+    text-align: center;
+    font-size: 14px;
+}
+
+#intro {
+    text-align: center;
+    transition: opacity 1s ease;
+}
+
+#startButton {
+    margin-top: 30px;
+    padding: 15px 32px;
+    border: none;
+    border-radius: 30px;
+    background: #ff3366;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 25px #ff336655;
+    transition: 0.3s;
+}
+
+#startButton:hover {
+    transform: scale(1.08);
+    background: #ff174f;
+}
+
+#animation {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+}
+
+canvas {
+    width: min(90vw, 600px);
+    height: auto;
+    background: radial-gradient(circle, #18000b, #050505 75%);
+    border-radius: 20px;
+}
+
+#message {
+    max-width: 600px;
+    padding: 20px;
+    margin-top: 15px;
+    color: #ff8da8;
+    font-size: 17px;
+    text-align: center;
+    line-height: 1.6;
+    opacity: 0;
+    transition: opacity 2s ease;
+}
+
+#progress {
+    color: #ff6688;
+    font-size: 12px;
+    margin-top: 10px;
+    font-family: monospace;
+}
+#loveText {
+    width: 85%;
+    max-width: 750px;
+    margin: 20px auto;
+    padding: 0 15px;
+    text-align: center;
+    color: #ffb6c8;
+    font-size: 13px;
+    line-height: 1.8;
+    white-space: pre-line;
+    overflow-wrap: break-word;
+    text-shadow: 0 0 10px #ff336633;
+}
+/* Ajuste para que todo quepa en la pantalla */
+body {
+    height: 100vh;
+    min-height: 0;
+    overflow: hidden;
+    padding: 5px;
+}
+
+#animation {
+    width: 100%;
+    height: 100%;
+    max-height: 100vh;
+    justify-content: flex-start;
+    gap: 0;
+    padding-top: 5px;
+}
+
+/* Título */
+#animation h1 {
+    font-size: 23px;
+    margin-bottom: 3px;
+}
+
+/* Subtítulo */
+#animation p {
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+/* Texto romántico */
+#animation {
+    width: 100%;
+}
+
+#loveText {
+    width: 90%;
+    max-width: 1150px;
+    margin: 10px auto 15px;
+    padding: 0 20px;
+
+    text-align: center;
+    color: #ffb6c8;
+
+    font-size: 15px;
+    line-height: 1.6;
+    font-family: system-ui, sans-serif;
+
+    white-space: pre-line;
+    overflow-wrap: break-word;
+
+    text-shadow: 0 0 10px #ff336633;
+}
+/* Corazón */
+#heartCanvas {
+    width: auto;
+    height: 30vh;
+    max-width: 90vw;
+    display: block;
+}
+
+/* Frase final */
+#message {
+    font-size: 13px;
+    margin-top: 5px;
+    padding: 5px 10px;
+    max-width: 650px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="intro">
+    <h1>Para Adriana ❤️</h1>
+    <p>He preparado algo para ti...</p>
+    <button id="startButton" onclick="startAnimation()">
+        Tengo algo para ti 💕
+    </button>
+</div>
+
+<div id="animation">
+    <h1>Un pequeño detalle para ti</h1>
+    <p>Hecho especialmente para ti ❤️</p>
+    <div id="loveText">
+    No sé muy bien cómo explicar lo que me haces sentir,
+    pero sé que me encanta.
+
+    Me encanta hablar contigo, escuchar tus tonterías,
+    reírme contigo y hasta esos momentos en los que no
+    hace falta decir nada para estar a gusto.
+
+    Me gusta cómo eres, tu forma de ser, tu sonrisa y
+    esa manera que tienes de hacer que cualquier día sea mejor.
+
+    Si pudiera elegir, volvería a coincidir contigo una y mil veces,
+    porque conocerte ha sido una de esas casualidades
+    que terminan convirtiéndose en algo precioso.
+
+    Y ojalá esto que estamos construyendo siga creciendo,
+    porque no sabes las ganas que tengo de seguir
+    creando recuerdos contigo. ❤️
+</div>
+
+    <canvas id="heartCanvas" width="600" height="560"></canvas>
+
+    <div id="progress">Preparando algo especial...</div>
+
+    <div id="message">
+        Desde que llegaste, hasta los días más normales
+        tienen algo especial. Y lo bonito es que muchas
+        veces ese algo eres tú. ❤️
+    </div>
+</div>
+
+<script>
+const canvas = document.getElementById("heartCanvas");
+const ctx = canvas.getContext("2d");
+
+const totalSteps = 60000;
+const stepsPerFrame = 20;
+
+let currentStep = 0;
+let animId = null;
+let started = false;
+
+const scale = 14;
+const cx = canvas.width / 2;
+const cy = canvas.height / 2 + 10;
+
+function hearta(k) {
+    return 15 * Math.pow(Math.sin(k), 3);
+}
+
+function heartb(k) {
+    return 12 * Math.cos(k)
+        - 5 * Math.cos(2*k)
+        - 2 * Math.cos(3*k)
+        - Math.cos(4*k);
+}
+
+function getCoords(i) {
+    const angle = (i / totalSteps) * Math.PI * 2;
+
+    return {
+        x: cx + hearta(angle) * scale,
+        y: cy - heartb(angle) * scale
+    };
+}
+
+let lastPos = { x: cx, y: cy };
+
+function drawStep(i) {
+    const nextPos = getCoords(i);
+
+    ctx.beginPath();
+    ctx.moveTo(lastPos.x, lastPos.y);
+    ctx.lineTo(nextPos.x, nextPos.y);
+
+    ctx.strokeStyle = "#ff1a4a";
+    ctx.lineWidth = 1;
+    ctx.shadowColor = "#ff3366";
+    ctx.shadowBlur = 5;
+    ctx.stroke();
+
+    lastPos = nextPos;
+}
+
+function loop() {
+    for (let s = 0; s < stepsPerFrame && currentStep < totalSteps; s++) {
+        drawStep(currentStep);
+        currentStep++;
+    }
+
+    document.getElementById("progress").textContent =
+        `Líneas: ${currentStep} / ${totalSteps}`;
+
+    if (currentStep < totalSteps) {
+        animId = requestAnimationFrame(loop);
+    } else {
+        ctx.beginPath();
+        ctx.moveTo(lastPos.x, lastPos.y);
+        ctx.lineTo(cx, cy);
+        ctx.stroke();
+
+        document.getElementById("progress").textContent =
+            "Hecho con cariño ❤️";
+
+        setTimeout(() => {
+            document.getElementById("message").style.opacity = "1";
+        }, 1000);
+    }
+}
+
+function startAnimation() {
+    if (started) return;
+    started = true;
+
+    const intro = document.getElementById("intro");
+    const animation = document.getElementById("animation");
+
+    intro.style.opacity = "0";
+
+    setTimeout(() => {
+        intro.style.display = "none";
+        animation.style.display = "flex";
+
+        setTimeout(() => {
+            animation.style.opacity = "1";
+            loop();
+        }, 100);
+
+    }, 1000);
+}
+</script>
+
+</body>
+</html>
+
