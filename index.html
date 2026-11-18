@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -13,21 +12,34 @@
     box-sizing: border-box;
 }
 
+html {
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
 body {
     background: #050505;
     color: white;
     font-family: system-ui, sans-serif;
+    width: 100%;
     min-height: 100vh;
+    min-height: 100svh;
+
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    overflow: hidden;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 20px 12px;
 }
 
 h1 {
     color: #ff3366;
-    font-size: 27px;
+    font-size: clamp(21px, 4vw, 27px);
     text-align: center;
     margin-bottom: 10px;
     text-shadow: 0 0 20px #ff336688;
@@ -39,8 +51,13 @@ p {
     font-size: 14px;
 }
 
+/* INTRO */
+
 #intro {
+    width: 100%;
+    max-width: 600px;
     text-align: center;
+    padding: 20px;
     transition: opacity 1s ease;
 }
 
@@ -59,171 +76,267 @@ p {
 }
 
 #startButton:hover {
-    transform: scale(1.08);
+    transform: scale(1.05);
     background: #ff174f;
 }
+
+/* ANIMACIÓN */
 
 #animation {
     display: none;
     flex-direction: column;
     align-items: center;
+
+    width: 100%;
+    max-width: 1200px;
+
     opacity: 0;
     transition: opacity 1.5s ease;
+
+    padding: 10px 0 25px;
+    gap: 5px;
 }
 
-canvas {
-    width: min(90vw, 600px);
+#animation h1 {
+    font-size: clamp(20px, 3vw, 25px);
+    margin-bottom: 4px;
+    padding: 0 10px;
+}
+
+#animation p {
+    font-size: 13px;
+    margin-top: 2px;
+}
+
+/* TEXTO */
+
+#loveText {
+    width: 92%;
+    max-width: 1100px;
+
+    margin: 12px auto;
+    padding: 0 15px;
+
+    text-align: center;
+    color: #ffb6c8;
+
+    font-size: clamp(14px, 1.3vw, 16px);
+    line-height: 1.65;
+    font-family: system-ui, sans-serif;
+
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+
+    text-shadow: 0 0 10px #ff336633;
+}
+
+/* CORAZÓN */
+
+#heartCanvas {
+    display: block;
+
+    width: min(90vw, 560px);
+    max-width: 100%;
     height: auto;
+
+    aspect-ratio: 600 / 560;
+
     background: radial-gradient(circle, #18000b, #050505 75%);
     border-radius: 20px;
 }
 
-#message {
-    max-width: 600px;
-    padding: 20px;
-    margin-top: 15px;
-    color: #ff8da8;
-    font-size: 17px;
-    text-align: center;
-    line-height: 1.6;
-    opacity: 0;
-    transition: opacity 2s ease;
-}
+/* PROGRESO */
 
 #progress {
     color: #ff6688;
     font-size: 12px;
     margin-top: 10px;
     font-family: monospace;
-}
-#loveText {
-    width: 85%;
-    max-width: 750px;
-    margin: 20px auto;
-    padding: 0 15px;
     text-align: center;
-    color: #ffb6c8;
-    font-size: 13px;
-    line-height: 1.8;
-    white-space: pre-line;
-    overflow-wrap: break-word;
-    text-shadow: 0 0 10px #ff336633;
-}
-/* Ajuste para que todo quepa en la pantalla */
-body {
-    height: 100vh;
-    min-height: 0;
-    overflow: hidden;
-    padding: 5px;
+    overflow-wrap: anywhere;
+    padding: 0 8px;
 }
 
-#animation {
-    width: 100%;
-    height: 100%;
-    max-height: 100vh;
-    justify-content: flex-start;
-    gap: 0;
-    padding-top: 5px;
-}
+/* MENSAJE FINAL */
 
-/* Título */
-#animation h1 {
-    font-size: 23px;
-    margin-bottom: 3px;
-}
-
-/* Subtítulo */
-#animation p {
-    font-size: 12px;
-    margin-top: 2px;
-}
-
-/* Texto romántico */
-#animation {
-    width: 100%;
-}
-
-#loveText {
-    width: 90%;
-    max-width: 1150px;
-    margin: 10px auto 15px;
-    padding: 0 20px;
-
-    text-align: center;
-    color: #ffb6c8;
-
-    font-size: 15px;
-    line-height: 1.6;
-    font-family: system-ui, sans-serif;
-
-    white-space: pre-line;
-    overflow-wrap: break-word;
-
-    text-shadow: 0 0 10px #ff336633;
-}
-/* Corazón */
-#heartCanvas {
-    width: auto;
-    height: 30vh;
-    max-width: 90vw;
-    display: block;
-}
-
-/* Frase final */
 #message {
-    font-size: 13px;
-    margin-top: 5px;
-    padding: 5px 10px;
+    width: 95%;
     max-width: 650px;
+
+    padding: 12px 15px;
+    margin-top: 10px;
+
+    color: #ff8da8;
+    font-size: 15px;
+    text-align: center;
+    line-height: 1.6;
+
+    opacity: 0;
+    transition: opacity 2s ease;
 }
-    /* Adaptación a móviles */
-@media screen and (max-width: 600px) {
+
+/* TABLETS */
+
+@media (max-width: 900px) {
 
     body {
-        width: 100%;
-        min-height: 100dvh;
-        overflow-x: hidden;
-        padding: 10px;
-        box-sizing: border-box;
+        justify-content: flex-start;
+        padding-top: 20px;
+        padding-bottom: 25px;
+    }
+
+    #animation {
+        max-width: 100%;
     }
 
     #loveText {
-        width: 94%;
-        max-width: 100%;
-        font-size: clamp(12px, 3.5vw, 15px);
+        width: 96%;
+        font-size: 15px;
         line-height: 1.6;
-        padding: 0 5px;
-        box-sizing: border-box;
-        overflow-wrap: break-word;
     }
 
-    canvas {
-        width: 100%;
-        max-width: 100%;
-        height: 38vh;
-        max-height: 350px;
+    #heartCanvas {
+        width: min(85vw, 500px);
     }
-
-    button {
-        max-width: 90%;
-        font-size: 16px;
-        padding: 12px 20px;
-    }
-
 }
 
-/* Móviles muy pequeños */
-@media screen and (max-width: 380px) {
+/* MÓVILES */
 
-    #loveText {
+@media (max-width: 600px) {
+
+    body {
+        min-height: 100vh;
+        min-height: 100svh;
+
+        justify-content: flex-start;
+        align-items: center;
+
+        padding: 15px 8px 30px;
+
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    #intro {
+        margin: auto 0;
+        padding: 15px 5px;
+    }
+
+    #intro h1 {
+        font-size: clamp(23px, 7vw, 30px);
+    }
+
+    #intro p {
+        font-size: 14px;
+    }
+
+    #startButton {
+        width: auto;
+        max-width: 95%;
+
+        padding: 14px 22px;
+        margin-top: 25px;
+
+        font-size: 16px;
+    }
+
+    #animation {
+        width: 100%;
+        min-height: auto;
+        height: auto;
+        max-height: none;
+
+        padding: 8px 0 25px;
+        gap: 5px;
+
+        justify-content: flex-start;
+    }
+
+    #animation h1 {
+        font-size: clamp(19px, 6vw, 25px);
+        line-height: 1.3;
+        margin-bottom: 5px;
+    }
+
+    #animation p {
         font-size: 12px;
         line-height: 1.5;
     }
 
-    canvas {
-        height: 32vh;
+    #loveText {
+        width: 100%;
+        max-width: 100%;
+
+        margin: 12px auto;
+        padding: 0 10px;
+
+        font-size: clamp(13px, 3.8vw, 15px);
+        line-height: 1.55;
+
+        white-space: pre-line;
+        overflow-wrap: anywhere;
     }
 
+    #heartCanvas {
+        width: min(88vw, 430px);
+        max-width: 100%;
+        height: auto;
+        aspect-ratio: 600 / 560;
+
+        border-radius: 12px;
+    }
+
+    #progress {
+        font-size: 11px;
+        margin-top: 8px;
+    }
+
+    #message {
+        width: 100%;
+        max-width: 100%;
+
+        font-size: 14px;
+        line-height: 1.55;
+
+        padding: 10px 12px;
+        margin-top: 8px;
+    }
+}
+
+/* MÓVILES PEQUEÑOS */
+
+@media (max-width: 380px) {
+
+    body {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    #animation h1 {
+        font-size: 20px;
+    }
+
+    #loveText {
+        font-size: 13px;
+        line-height: 1.5;
+        padding: 0 7px;
+    }
+
+    #heartCanvas {
+        width: 90vw;
+    }
+
+    #message {
+        font-size: 13px;
+    }
+}
+
+/* EVITAR ANIMACIONES DE INTERFAZ SI SE PREFIERE */
+@media (hover: none) {
+
+    #startButton:hover {
+        transform: none;
+    }
 }
 </style>
 </head>
@@ -233,14 +346,18 @@ body {
 <div id="intro">
     <h1>Para Adriana ❤️</h1>
     <p>He preparado algo para ti...</p>
+
     <button id="startButton" onclick="startAnimation()">
         Tengo algo para ti 💕
     </button>
 </div>
 
 <div id="animation">
+
     <h1>Un pequeño detalle para ti</h1>
+
     <p>Hecho especialmente para ti ❤️</p>
+
     <div id="loveText">
     No sé muy bien cómo explicar lo que me haces sentir,
     pero sé que me encanta.
@@ -259,7 +376,7 @@ body {
     Y ojalá esto que estamos construyendo siga creciendo,
     porque no sabes las ganas que tengo de seguir
     creando recuerdos contigo. ❤️
-</div>
+    </div>
 
     <canvas id="heartCanvas" width="600" height="560"></canvas>
 
@@ -270,6 +387,7 @@ body {
         tienen algo especial. Y lo bonito es que muchas
         veces ese algo eres tú. ❤️
     </div>
+
 </div>
 
 <script>
@@ -293,9 +411,9 @@ function hearta(k) {
 
 function heartb(k) {
     return 12 * Math.cos(k)
-        - 5 * Math.cos(2*k)
-        - 2 * Math.cos(3*k)
-        - Math.cos(4*k);
+        - 5 * Math.cos(2 * k)
+        - 2 * Math.cos(3 * k)
+        - Math.cos(4 * k);
 }
 
 function getCoords(i) {
@@ -320,13 +438,19 @@ function drawStep(i) {
     ctx.lineWidth = 1;
     ctx.shadowColor = "#ff3366";
     ctx.shadowBlur = 5;
+
     ctx.stroke();
 
     lastPos = nextPos;
 }
 
 function loop() {
-    for (let s = 0; s < stepsPerFrame && currentStep < totalSteps; s++) {
+
+    for (
+        let s = 0;
+        s < stepsPerFrame && currentStep < totalSteps;
+        s++
+    ) {
         drawStep(currentStep);
         currentStep++;
     }
@@ -335,8 +459,11 @@ function loop() {
         `Líneas: ${currentStep} / ${totalSteps}`;
 
     if (currentStep < totalSteps) {
+
         animId = requestAnimationFrame(loop);
+
     } else {
+
         ctx.beginPath();
         ctx.moveTo(lastPos.x, lastPos.y);
         ctx.lineTo(cx, cy);
@@ -352,6 +479,7 @@ function loop() {
 }
 
 function startAnimation() {
+
     if (started) return;
     started = true;
 
@@ -361,6 +489,7 @@ function startAnimation() {
     intro.style.opacity = "0";
 
     setTimeout(() => {
+
         intro.style.display = "none";
         animation.style.display = "flex";
 
