@@ -501,6 +501,40 @@ function startAnimation() {
     }, 1000);
 }
 </script>
+    <!-- CONTADOR DE VISITAS -->
+<div id="contador-visitas" style="
+    position: fixed;
+    bottom: 12px;
+    right: 12px;
+    background: rgba(0,0,0,0.65);
+    color: white;
+    padding: 8px 13px;
+    border-radius: 20px;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    z-index: 9999;
+">
+    Visitas: <span id="visitas">...</span>
+</div>
+
+<script>
+async function contarVisita() {
+    try {
+        const respuesta = await fetch(
+            "https://api.counterapi.dev/v1/mi-pagina-ruben/visitas/up"
+        );
+
+        const datos = await respuesta.json();
+
+        document.getElementById("visitas").textContent =
+            datos.count;
+    } catch (error) {
+        document.getElementById("visitas").textContent = "Error";
+    }
+}
+
+contarVisita();
+</script>
 
 </body>
 </html>
