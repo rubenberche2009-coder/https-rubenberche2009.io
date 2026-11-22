@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -31,7 +29,7 @@ body {
 
 .main {
     display: grid;
-    grid-template-columns: .8fr 1.2fr;
+    grid-template-columns: 0.8fr 1.2fr;
     gap: 55px;
     align-items: center;
 }
@@ -80,6 +78,8 @@ body {
     font-weight: bold;
 }
 
+/* CALENDARIO */
+
 .calendar {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
@@ -98,7 +98,7 @@ body {
     font-size: 27px;
     font-weight: 800;
     cursor: pointer;
-    transition: .25s ease;
+    transition: 0.25s ease;
     box-shadow: 0 3px 7px #0000000c;
 }
 
@@ -128,7 +128,7 @@ body {
 }
 
 .day:active:not(:disabled) {
-    transform: scale(.94);
+    transform: scale(0.94);
 }
 
 .day:nth-child(4n+1) {
@@ -147,11 +147,15 @@ body {
     grid-column: span 2;
 }
 
+/* DÍAS BLOQUEADOS */
+
 .day:disabled {
-    opacity: .35;
+    opacity: 0.35;
     cursor: not-allowed;
     box-shadow: none;
 }
+
+/* PIE */
 
 .footer {
     text-align: center;
@@ -160,6 +164,8 @@ body {
     font-size: 12px;
     letter-spacing: 1px;
 }
+
+/* VENTANA EMERGENTE */
 
 .overlay {
     position: fixed;
@@ -175,7 +181,7 @@ body {
 
 .overlay.active {
     display: flex;
-    animation: fadeIn .3s ease;
+    animation: fadeIn 0.3s ease;
 }
 
 .modal {
@@ -187,7 +193,7 @@ body {
     padding: 35px;
     text-align: center;
     position: relative;
-    animation: appear .35s ease;
+    animation: appear 0.35s ease;
 }
 
 .close {
@@ -240,7 +246,7 @@ body {
 @keyframes appear {
     from {
         opacity: 0;
-        transform: translateY(20px) scale(.95);
+        transform: translateY(20px) scale(0.95);
     }
     to {
         opacity: 1;
@@ -248,7 +254,9 @@ body {
     }
 }
 
-@media(max-width: 850px) {
+/* MÓVILES */
+
+@media (max-width: 850px) {
     .container {
         padding: 45px 22px;
     }
@@ -276,7 +284,7 @@ body {
     }
 }
 
-@media(max-width: 420px) {
+@media (max-width: 420px) {
     .calendar {
         grid-auto-rows: 52px;
         gap: 5px;
@@ -301,11 +309,15 @@ body {
     <main class="main">
 
         <section class="intro">
-            <h1>Regálate un diciembre <span>especial.</span></h1>
+
+            <h1>
+                Regálate un diciembre
+                <span>especial.</span>
+            </h1>
 
             <p>
-                Un pequeño calendario preparado especialmente para ti.
-                Cada día esconde una nueva sorpresa.
+                Un pequeño calendario preparado especialmente
+                para ti. Cada día esconde una nueva sorpresa.
             </p>
 
             <div class="info">
@@ -322,6 +334,7 @@ body {
                 <span>3</span>
                 Abre una nueva casilla cada día.
             </div>
+
         </section>
 
         <section class="calendar" id="calendar"></section>
@@ -333,6 +346,8 @@ body {
     </div>
 
 </div>
+
+<!-- VENTANA EMERGENTE -->
 
 <div class="overlay" id="overlay">
 
@@ -354,94 +369,89 @@ body {
 
 <script>
 
-// ======================================
-// MODO DE PRUEBA
-// Simula el día 2 de diciembre de 2026
-// ======================================
+// FECHA REAL: DICIEMBRE DE 2026
 
-const fechaActual = new Date(2026, 11, 2);
+const fechaActual = new Date();
 
 const esDiciembre =
     fechaActual.getFullYear() === 2026 &&
     fechaActual.getMonth() === 11;
 
-const diaActual = esDiciembre ? fechaActual.getDate() : 0;
+const diaActual = esDiciembre
+    ? fechaActual.getDate()
+    : 0;
 
 
-// ======================================
-// FRASES DEL CALENDARIO
-// ======================================
+// LAS 31 FRASES
 
 const frases = {
 
-1: "Quería empezar diciembre teniendo un pequeño detalle contigo.",
+    1: "Quería empezar diciembre teniendo un pequeño detalle contigo.",
 
-2: "Espero que hoy tengas tantos motivos para sonreír como los que tú provocas.",
+    2: "Espero que hoy tengas tantos motivos para sonreír como los que tú provocas.",
 
-3: "Hay conversaciones que pueden mejorar cualquier día, y las nuestras son una de ellas.",
+    3: "Hay conversaciones que pueden mejorar cualquier día, y las nuestras son una de ellas.",
 
-4: "Me gusta la facilidad que tienes para hacer que un momento normal sea especial.",
+    4: "Me gusta la facilidad que tienes para hacer que un momento normal sea especial.",
 
-5: "Nunca subestimes lo importante que puedes llegar a ser para alguien.",
+    5: "Nunca subestimes lo importante que puedes llegar a ser para alguien.",
 
-6: "Ojalá pudiera regalarte un poquito de toda la felicidad que transmites.",
+    6: "Ojalá pudiera regalarte un poquito de toda la felicidad que transmites.",
 
-7: "Si tuviera que elegir una conversación para repetir, seguramente elegiría alguna contigo.",
+    7: "Si tuviera que elegir una conversación para repetir, seguramente elegiría alguna contigo.",
 
-8: "Tienes una forma de ser que hace que sea difícil no cogerte cariño.",
+    8: "Tienes una forma de ser que hace que sea difícil no cogerte cariño.",
 
-9: "Espero que nunca dejes de ser esa persona tan especial que eres.",
+    9: "Espero que nunca dejes de ser esa persona tan especial que eres.",
 
-10: "A veces no hace falta hacer grandes cosas para alegrarle el día a alguien. Tú lo haces simplemente siendo tú.",
+    10: "A veces no hace falta hacer grandes cosas para alegrarle el día a alguien. Tú lo haces simplemente siendo tú.",
 
-11: "No sé qué tendrá diciembre, pero este año tiene algo que lo hace diferente.",
+    11: "No sé qué tendrá diciembre, pero este año tiene algo que lo hace diferente.",
 
-12: "Ojalá pudiera guardar todos esos pequeños momentos contigo para poder volver a vivirlos siempre que quisiera. ❤️",
+    12: "Ojalá pudiera guardar todos esos pequeños momentos contigo para poder volver a vivirlos siempre que quisiera. ❤️",
 
-13: "¿Te gustó la sorpresa de ayer? Espero que sí, porque llevaba tiempo pensando en cómo hacer que ese día fuese especial para ti. ❤️",
+    13: "¿Te gustó la sorpresa de ayer? Espero que sí, porque llevaba tiempo pensando en cómo hacer que ese día fuese especial para ti. ❤️",
 
-14: "Pase lo que pase, quiero que sepas que me alegro muchísimo de haberte conocido.",
+    14: "Pase lo que pase, quiero que sepas que me alegro muchísimo de haberte conocido.",
 
-15: "Me encanta poder compartir momentos contigo, incluso los más simples.",
+    15: "Me encanta poder compartir momentos contigo, incluso los más simples.",
 
-16: "Si alguna vez dudas de lo especial que eres, espero que recuerdes que hay personas que tienen mucha suerte de tenerte cerca.",
+    16: "Si alguna vez dudas de lo especial que eres, espero que recuerdes que hay personas que tienen mucha suerte de tenerte cerca.",
 
-17: "Una de las mejores cosas de este año ha sido coincidir contigo.",
+    17: "Una de las mejores cosas de este año ha sido coincidir contigo.",
 
-18: "Me gustan tus bromas, tus ocurrencias y hasta esas pequeñas cosas que seguramente tú ni notas.",
+    18: "Me gustan tus bromas, tus ocurrencias y hasta esas pequeñas cosas que seguramente tú ni notas.",
 
-19: "Ojalá podamos seguir acumulando recuerdos que algún día nos hagan sonreír.",
+    19: "Ojalá podamos seguir acumulando recuerdos que algún día nos hagan sonreír.",
 
-20: "No hace falta que sea un día perfecto para que sea bonito. A veces basta con compartirlo con las personas adecuadas.",
+    20: "No hace falta que sea un día perfecto para que sea bonito. A veces basta con compartirlo con las personas adecuadas.",
 
-21: "Gracias por cada conversación, cada risa y cada momento que hemos compartido.",
+    21: "Gracias por cada conversación, cada risa y cada momento que hemos compartido.",
 
-22: "Si algo tengo claro es que conocerte ha sido una de esas casualidades que agradezco.",
+    22: "Si algo tengo claro es que conocerte ha sido una de esas casualidades que agradezco.",
 
-23: "Espero que hoy sonrías mucho. Te lo mereces.",
+    23: "Espero que hoy sonrías mucho. Te lo mereces.",
 
-24: "Esta Navidad solo quiero desearte cosas bonitas, porque te mereces todo lo bueno que te pase.",
+    24: "Esta Navidad solo quiero desearte cosas bonitas, porque te mereces todo lo bueno que te pase.",
 
-25: "Feliz Navidad. Espero que estés rodeada de personas que te quieran y que tengas un día precioso. ❤️",
+    25: "Feliz Navidad. Espero que estés rodeada de personas que te quieran y que tengas un día precioso. ❤️",
 
-26: "Qué suerte haber coincidido contigo entre tantas personas.",
+    26: "Qué suerte haber coincidido contigo entre tantas personas.",
 
-27: "Nunca sabes cuándo alguien va a convertirse en una persona importante para ti.",
+    27: "Nunca sabes cuándo alguien va a convertirse en una persona importante para ti.",
 
-28: "Me gustaría que dentro de mucho tiempo pudiéramos recordar este diciembre con una sonrisa.",
+    28: "Me gustaría que dentro de mucho tiempo pudiéramos recordar este diciembre con una sonrisa.",
 
-29: "Gracias por ser tú, sin necesidad de cambiar absolutamente nada.",
+    29: "Gracias por ser tú, sin necesidad de cambiar absolutamente nada.",
 
-30: "Se acaba el año, pero espero que todavía nos queden muchísimos momentos por compartir.",
+    30: "Se acaba el año, pero espero que todavía nos queden muchísimos momentos por compartir.",
 
-31: "Último día del calendario, pero ojalá sea solo el principio de muchos recuerdos bonitos juntos. ❤️"
+    31: "Último día del calendario, pero ojalá sea solo el principio de muchos recuerdos bonitos juntos. ❤️"
 
 };
 
 
-// ======================================
 // CREAR LOS 31 DÍAS
-// ======================================
 
 const calendar = document.getElementById("calendar");
 
@@ -470,9 +480,7 @@ for (let i = 1; i <= 31; i++) {
 }
 
 
-// ======================================
-// ABRIR Y CERRAR LAS SORPRESAS
-// ======================================
+// ABRIR UN DÍA
 
 function openDay(number) {
 
@@ -495,11 +503,17 @@ function openDay(number) {
 
 }
 
+
+// CERRAR VENTANA
+
 function closeModal() {
 
     document.getElementById("overlay").classList.remove("active");
 
 }
+
+
+// CERRAR AL PULSAR FUERA
 
 document.getElementById("overlay").addEventListener("click", function(e) {
 
@@ -508,6 +522,9 @@ document.getElementById("overlay").addEventListener("click", function(e) {
     }
 
 });
+
+
+// CERRAR CON ESCAPE
 
 document.addEventListener("keydown", function(e) {
 
@@ -521,4 +538,3 @@ document.addEventListener("keydown", function(e) {
 
 </body>
 </html>
-
